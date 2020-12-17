@@ -1,5 +1,7 @@
 # ExOption
 
+![Elixir CI](https://github.com/akthrms/ex_option/workflows/Elixir%20CI/badge.svg)
+
 **TODO: Add description**
 
 ## Installation

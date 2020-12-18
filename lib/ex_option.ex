@@ -25,6 +25,7 @@ defmodule ExOption do
 
       iex> ExOption.some(2) |> ExOption.some?()
       true
+
       iex> ExOption.none() |> ExOption.some?()
       false
   """
@@ -40,6 +41,7 @@ defmodule ExOption do
 
       iex> ExOption.some(2) |> ExOption.none?()
       false
+
       iex> ExOption.none() |> ExOption.none?()
       true
   """
@@ -72,6 +74,7 @@ defmodule ExOption do
 
       iex> ExOption.some("car") |> ExOption.unwrap_or("bike")
       "car"
+
       iex> ExOption.none() |> ExOption.unwrap_or("bike")
       "bike"
   """
@@ -100,6 +103,7 @@ defmodule ExOption do
 
       iex> ExOption.some("foo") |> ExOption.map_or(42, &String.length/1)
       3
+
       iex> ExOption.none() |> ExOption.map_or(42, &String.length/1)
       42
   """
@@ -115,10 +119,13 @@ defmodule ExOption do
 
       iex> ExOption.some(2) |> ExOption.and_option(ExOption.none())
       {:none}
+
       iex> ExOption.none() |> ExOption.and_option(ExOption.some("foo"))
       {:none}
+
       iex> ExOption.some(2) |> ExOption.and_option(ExOption.some("foo"))
       {:some, "foo"}
+
       iex> ExOption.none() |> ExOption.and_option(ExOption.none())
       {:none}
   """
@@ -138,10 +145,13 @@ defmodule ExOption do
 
       iex> ExOption.some(2) |> ExOption.and_then(fn x -> ExOption.some(x * x) end) |> ExOption.and_then(fn x -> ExOption.some(x * x) end)
       {:some, 16}
+
       iex> ExOption.some(2) |> ExOption.and_then(fn x -> ExOption.some(x * x) end) |> ExOption.and_then(fn _ -> ExOption.none() end)
       {:none}
+
       iex> ExOption.some(2) |> ExOption.and_then(fn _ -> ExOption.none() end) |> ExOption.and_then(fn x -> ExOption.some(x * x) end)
       {:none}
+
       iex> ExOption.none() |> ExOption.and_then(fn x -> ExOption.some(x * x) end) |> ExOption.and_then(fn x -> ExOption.some(x * x) end)
       {:none}
   """
@@ -160,8 +170,10 @@ defmodule ExOption do
 
       iex> ExOption.none() |> ExOption.filter(fn n -> rem(n, 2) == 0 end)
       {:none}
+
       iex> ExOption.some(3) |> ExOption.filter(fn n -> rem(n, 2) == 0 end)
       {:none}
+
       iex> ExOption.some(4) |> ExOption.filter(fn n -> rem(n, 2) == 0 end)
       {:some, 4}
   """
@@ -177,10 +189,13 @@ defmodule ExOption do
 
       iex> ExOption.some(2) |> ExOption.or_option(ExOption.none())
       {:some, 2}
+
       iex> ExOption.none() |> ExOption.or_option(ExOption.some(100))
       {:some, 100}
+
       iex> ExOption.some(2) |> ExOption.or_option(ExOption.some(100))
       {:some, 2}
+
       iex> ExOption.none() |> ExOption.or_option(ExOption.none())
       {:none}
   """
@@ -200,10 +215,13 @@ defmodule ExOption do
 
       iex> ExOption.some(2) |> ExOption.xor_option(ExOption.none())
       {:some, 2}
+
       iex> ExOption.none() |> ExOption.xor_option(ExOption.some(2))
       {:some, 2}
+
       iex> ExOption.some(2) |> ExOption.xor_option(ExOption.some(2))
       {:none}
+
       iex> ExOption.none() |> ExOption.xor_option(ExOption.none())
       {:none}
   """
@@ -223,6 +241,7 @@ defmodule ExOption do
 
       iex> ExOption.some(2) |> ExOption.replace(5)
       {:some, 5}
+
       iex> ExOption.none() |> ExOption.replace(3)
       {:none}
   """
@@ -238,6 +257,7 @@ defmodule ExOption do
 
       iex> ExOption.some(1) |> ExOption.zip(ExOption.some("hi"))
       {:some, {1, "hi"}}
+
       iex> ExOption.some(1) |> ExOption.zip(ExOption.none())
       {:none}
   """
@@ -257,8 +277,10 @@ defmodule ExOption do
 
       iex> ExOption.some(ExOption.some(6)) |> ExOption.flatten()
       {:some, 6}
+
       iex> ExOption.some(ExOption.none()) |> ExOption.flatten()
       {:none}
+
       iex> ExOption.none() |> ExOption.flatten()
       {:none}
   """

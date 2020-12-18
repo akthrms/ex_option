@@ -2,7 +2,7 @@
 
 ![Elixir CI](https://github.com/akthrms/ex_option/workflows/Elixir%20CI/badge.svg)
 
-**TODO: Add description**
+Option library inspired by Rust.
 
 ## Installation
 
@@ -17,7 +17,15 @@ def deps do
 end
 ```
 
+## Basic Usage
+
+```elixir
+iex> ExOption.some(2)
+...> |> ExOption.map(fn x -> x * 2 end)
+...> |> ExOption.unwrap()
+4
+```
+
 Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
 and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
 be found at [https://hexdocs.pm/ex_option](https://hexdocs.pm/ex_option).
-

@@ -1,6 +1,6 @@
 defmodule ExOption do
   @moduledoc """
-  Documentation for `ExOption`.
+  Option library inspired by Rust.
   """
 
   @type option :: {:some, any} | {:none}

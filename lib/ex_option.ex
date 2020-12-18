@@ -52,6 +52,7 @@ defmodule ExOption do
   @spec unwrap(option) :: any
   @doc """
   Returns the contained some value.
+
   Errors if the value equals none.
 
   ## Examples
@@ -235,7 +236,9 @@ defmodule ExOption do
 
   @spec replace(option, any) :: option
   @doc """
-  Replaces the actual value in the option by the value given in parameter, returning the old value if present, leaving a some in its place without deinitializing either one.
+  Replaces the actual value in the option by the value given in parameter,
+
+  returning the old value if present, leaving a some in its place without deinitializing either one.
 
   ## Examples
 

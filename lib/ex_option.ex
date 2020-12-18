@@ -81,7 +81,7 @@ defmodule ExOption do
 
   @spec map(option, fun) :: option
   @doc """
-  Maps an option T to option U by applying a function to a contained value.
+  Maps an option to another option by applying a function to a contained value.
 
   ## Examples
 
@@ -106,4 +106,46 @@ defmodule ExOption do
   def map_or({:some, value}, _, fun), do: fun.(value)
 
   def map_or({:none}, default, _), do: default
+
+  @spec and_option(option, option) :: option
+  @doc """
+  Returns none if the arg1 is none, otherwise returns arg2.
+
+  ## Examples
+
+      iex> ExOption.some(2) |> ExOption.and_option(ExOption.none())
+      {:none}
+      iex> ExOption.none() |> ExOption.and_option(ExOption.some("foo"))
+      {:none}
+      iex> ExOption.some(2) |> ExOption.and_option(ExOption.some("foo"))
+      {:some, "foo"}
+      iex> ExOption.none() |> ExOption.and_option(ExOption.none())
+      {:none}
+  """
+  def and_option({:some, _}, {:some, value}), do: some(value)
+
+  def and_option({:some, _}, {:none}), do: none()
+
+  def and_option({:none}, {:some, _}), do: none()
+
+  def and_option({:none}, {:none}), do: none()
+
+  @spec and_then(option, fun) :: option
+  @doc """
+  Returns none if the option is none, otherwise calls fun with the wrapped value and returns the result.
+
+  ## Examples
+
+      iex> ExOption.some(2) |> ExOption.and_then(fn x -> ExOption.some(x * x) end) |> ExOption.and_then(fn x -> ExOption.some(x * x) end)
+      {:some, 16}
+      iex> ExOption.some(2) |> ExOption.and_then(fn x -> ExOption.some(x * x) end) |> ExOption.and_then(fn _ -> ExOption.none() end)
+      {:none}
+      iex> ExOption.some(2) |> ExOption.and_then(fn _ -> ExOption.none() end) |> ExOption.and_then(fn x -> ExOption.some(x * x) end)
+      {:none}
+      iex> ExOption.none() |> ExOption.and_then(fn x -> ExOption.some(x * x) end) |> ExOption.and_then(fn x -> ExOption.some(x * x) end)
+      {:none}
+  """
+  def and_then({:some, value}, fun), do: fun.(value)
+
+  def and_then({:none}, _), do: none()
 end

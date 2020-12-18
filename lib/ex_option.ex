@@ -83,7 +83,7 @@ defmodule ExOption do
 
   def unwrap_or({:none}, default), do: default
 
-  @spec map(option, fun) :: option
+  @spec map(option, (any -> any)) :: option
   @doc """
   Maps an option to another option by applying a function to a contained value.
 
@@ -96,7 +96,7 @@ defmodule ExOption do
 
   def map({:none}, _), do: none()
 
-  @spec map_or(option, any, fun) :: any
+  @spec map_or(option, any, (any -> any)) :: any
   @doc """
   Applies a function to the contained value (if any), or returns the provided default (if not).
 
@@ -111,6 +111,22 @@ defmodule ExOption do
   def map_or({:some, value}, _, fun), do: fun.(value)
 
   def map_or({:none}, default, _), do: default
+
+  @spec map_or_else(option, (() -> any), (any -> any)) :: any
+  @doc """
+  Applies a function to the contained value (if any), or computes a default (if not).
+
+  ## Examples
+
+      iex> ExOption.some("foo") |> ExOption.map_or_else(fn -> 2 * 21 end, fn x -> String.length(x) end)
+      3
+
+      iex> ExOption.none() |> ExOption.map_or_else(fn -> 2 * 21 end, fn x -> String.length(x) end)
+      42
+  """
+  def map_or_else({:some, value}, _, fun), do: fun.(value)
+
+  def map_or_else({:none}, default, _), do: default.()
 
   @spec and_option(option, option) :: option
   @doc """
@@ -138,7 +154,7 @@ defmodule ExOption do
 
   def and_option({:none}, {:none}), do: none()
 
-  @spec and_then(option, fun) :: option
+  @spec and_then(option, (any -> option)) :: option
   @doc """
   Returns none if the option is none, otherwise calls fun with the wrapped value and returns the result.
 
@@ -160,7 +176,7 @@ defmodule ExOption do
 
   def and_then({:none}, _), do: none()
 
-  @spec filter(option, fun) :: option
+  @spec filter(option, (any -> boolean)) :: option
   @doc """
   Returns none if the option is none, otherwise calls fun with the wrapped value and returns:
 
@@ -207,6 +223,25 @@ defmodule ExOption do
   def or_option({:none}, {:some, value}), do: some(value)
 
   def or_option({:none}, {:none}), do: none()
+
+  @spec or_option_else(option, (() -> option)) :: option
+  @doc """
+  Returns the option if it contains a value, otherwise calls f and returns the result.
+
+  ## Examples
+
+      iex> ExOption.some("barbarians") |> ExOption.or_option_else(fn -> ExOption.some("vikings") end)
+      {:some, "barbarians"}
+
+      iex> ExOption.none() |> ExOption.or_option_else(fn -> ExOption.some("vikings") end)
+      {:some, "vikings"}
+
+      iex> ExOption.none() |> ExOption.or_option_else(fn -> ExOption.none() end)
+      {:none}
+  """
+  def or_option_else({:some, value}, _), do: some(value)
+
+  def or_option_else({:none}, fun), do: fun.()
 
   @spec xor_option(option, option) :: option
   @doc """

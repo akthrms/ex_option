@@ -236,9 +236,9 @@ defmodule ExOption do
 
   @spec replace(option, any) :: option
   @doc """
-  Replaces the actual value in the option by the value given in parameter,
+  Replaces the actual value in the option by the value given in parameter.
 
-  returning the old value if present, leaving a some in its place without deinitializing either one.
+  Returning the old value if present, leaving a some in its place without deinitializing either one.
 
   ## Examples
 

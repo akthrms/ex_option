@@ -214,4 +214,57 @@ defmodule ExOption do
   def xor_option({:none}, {:some, value}), do: some(value)
 
   def xor_option({:none}, {:none}), do: none()
+
+  @spec replace(option, any) :: option
+  @doc """
+  Replaces the actual value in the option by the value given in parameter, returning the old value if present, leaving a some in its place without deinitializing either one.
+
+  ## Examples
+
+      iex> ExOption.some(2) |> ExOption.replace(5)
+      {:some, 5}
+      iex> ExOption.none() |> ExOption.replace(3)
+      {:none}
+  """
+  def replace({:some, _}, value), do: some(value)
+
+  def replace({:none}, _), do: none()
+
+  @spec zip(option, option) :: option
+  @doc """
+  Zips arg1 with arg2.
+
+  ## Examples
+
+      iex> ExOption.some(1) |> ExOption.zip(ExOption.some("hi"))
+      {:some, {1, "hi"}}
+      iex> ExOption.some(1) |> ExOption.zip(ExOption.none())
+      {:none}
+  """
+  def zip({:some, value1}, {:some, value2}), do: some({value1, value2})
+
+  def zip({:some, _}, {:none}), do: none()
+
+  def zip({:none}, {:some, _}), do: none()
+
+  def zip({:none}, {:none}), do: none()
+
+  @spec flatten(option) :: option
+  @doc """
+  Converts from nested option to unnested option.
+
+  ## Examples
+
+      iex> ExOption.some(ExOption.some(6)) |> ExOption.flatten()
+      {:some, 6}
+      iex> ExOption.some(ExOption.none()) |> ExOption.flatten()
+      {:none}
+      iex> ExOption.none() |> ExOption.flatten()
+      {:none}
+  """
+  def flatten({:some, value}), do: flatten(value)
+
+  def flatten({:none}), do: none()
+
+  def flatten(value), do: some(value)
 end

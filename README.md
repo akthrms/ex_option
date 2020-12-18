@@ -1,6 +1,7 @@
 # ExOption
 
 ![Elixir CI](https://github.com/akthrms/ex_option/workflows/Elixir%20CI/badge.svg)
+![Hex.pm](https://img.shields.io/hexpm/v/ex_option)
 
 Option library inspired by Rust.
 

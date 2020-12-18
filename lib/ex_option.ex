@@ -148,4 +148,70 @@ defmodule ExOption do
   def and_then({:some, value}, fun), do: fun.(value)
 
   def and_then({:none}, _), do: none()
+
+  @spec filter(option, fun) :: option
+  @doc """
+  Returns none if the option is none, otherwise calls fun with the wrapped value and returns:
+
+  - some if fun returns true, and
+  - none if fun returns false.
+
+  ## Examples
+
+      iex> ExOption.none() |> ExOption.filter(fn n -> rem(n, 2) == 0 end)
+      {:none}
+      iex> ExOption.some(3) |> ExOption.filter(fn n -> rem(n, 2) == 0 end)
+      {:none}
+      iex> ExOption.some(4) |> ExOption.filter(fn n -> rem(n, 2) == 0 end)
+      {:some, 4}
+  """
+  def filter({:some, value}, fun), do: if(fun.(value), do: some(value), else: none())
+
+  def filter({:none}, _), do: none()
+
+  @spec or_option(option, option) :: option
+  @doc """
+  Returns the arg1 if it contains a value, otherwise returns arg2.
+
+  ## Examples
+
+      iex> ExOption.some(2) |> ExOption.or_option(ExOption.none())
+      {:some, 2}
+      iex> ExOption.none() |> ExOption.or_option(ExOption.some(100))
+      {:some, 100}
+      iex> ExOption.some(2) |> ExOption.or_option(ExOption.some(100))
+      {:some, 2}
+      iex> ExOption.none() |> ExOption.or_option(ExOption.none())
+      {:none}
+  """
+  def or_option({:some, value}, {:some, _}), do: some(value)
+
+  def or_option({:some, value}, {:none}), do: some(value)
+
+  def or_option({:none}, {:some, value}), do: some(value)
+
+  def or_option({:none}, {:none}), do: none()
+
+  @spec xor_option(option, option) :: option
+  @doc """
+  Returns some if exactly one of arg1, arg2 is Some, otherwise returns none.
+
+  ## Examples
+
+      iex> ExOption.some(2) |> ExOption.xor_option(ExOption.none())
+      {:some, 2}
+      iex> ExOption.none() |> ExOption.xor_option(ExOption.some(2))
+      {:some, 2}
+      iex> ExOption.some(2) |> ExOption.xor_option(ExOption.some(2))
+      {:none}
+      iex> ExOption.none() |> ExOption.xor_option(ExOption.none())
+      {:none}
+  """
+  def xor_option({:some, _}, {:some, _}), do: none()
+
+  def xor_option({:some, value}, {:none}), do: some(value)
+
+  def xor_option({:none}, {:some, value}), do: some(value)
+
+  def xor_option({:none}, {:none}), do: none()
 end

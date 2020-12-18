@@ -3,7 +3,9 @@
 ![Elixir CI](https://github.com/akthrms/ex_option/workflows/Elixir%20CI/badge.svg)
 ![Hex.pm](https://img.shields.io/hexpm/v/ex_option)
 
-Option library inspired by Rust.
+Option/Maybe library inspired by Rust.
+
+This library represents an optional value: every option is either some and contains a value, or none.
 
 ## Installation
 
@@ -12,7 +14,7 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
 ```elixir
 def deps do
   [
-    {:ex_option, "~> 0.1.1"}
+    {:ex_option, "~> 0.1.2"}
   ]
 end
 ```

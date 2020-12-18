@@ -1,6 +1,8 @@
 defmodule ExOption do
   @moduledoc """
-  Option library inspired by Rust.
+  Option/Maybe library inspired by Rust.
+
+  This library represents an optional value: every option is either some and contains a value, or none.
   """
 
   @type option :: {:some, any} | {:none}

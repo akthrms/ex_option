@@ -4,8 +4,8 @@ defmodule ExOption.MixProject do
   def project do
     [
       app: :ex_option,
-      description: "Option library inspired by Rust.",
-      version: "0.1.1",
+      description: "Option/Maybe library inspired by Rust.",
+      version: "0.1.2",
       elixir: "~> 1.6",
       start_permanent: Mix.env() == :prod,
       deps: deps(),

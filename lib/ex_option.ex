@@ -85,6 +85,22 @@ defmodule ExOption do
 
   def unwrap_or({:none}, default), do: default
 
+  @spec unwrap_or_else(option, (() -> any)) :: any
+  @doc """
+  Returns the contained some value or computes it from a closure.
+
+  ## Examples
+
+      iex> ExOption.some(2) |> ExOption.unwrap_or_else(fn -> 2 * 10 end)
+      2
+
+      iex> ExOption.none() |> ExOption.unwrap_or_else(fn -> 2 * 10 end)
+      20
+  """
+  def unwrap_or_else({:some, value}, _), do: value
+
+  def unwrap_or_else({:none}, fun), do: fun.()
+
   @spec map(option, (any -> any)) :: option
   @doc """
   Maps an option to another option by applying a function to a contained value.

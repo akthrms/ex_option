@@ -136,16 +136,16 @@ defmodule ExOption do
 
   ## Examples
 
-      iex> ExOption.some(2) |> ExOption.option_and(ExOption.none())
+      iex> ExOption.option_and(ExOption.some(2), ExOption.none())
       {:none}
 
-      iex> ExOption.none() |> ExOption.option_and(ExOption.some("foo"))
+      iex> ExOption.option_and(ExOption.none(), ExOption.some("foo"))
       {:none}
 
-      iex> ExOption.some(2) |> ExOption.option_and(ExOption.some("foo"))
+      iex> ExOption.option_and(ExOption.some(2), ExOption.some("foo"))
       {:some, "foo"}
 
-      iex> ExOption.none() |> ExOption.option_and(ExOption.none())
+      iex> ExOption.option_and(ExOption.none(), ExOption.none())
       {:none}
   """
   def option_and({:some, _}, {:some, value}), do: some(value)
@@ -206,16 +206,16 @@ defmodule ExOption do
 
   ## Examples
 
-      iex> ExOption.some(2) |> ExOption.option_or(ExOption.none())
+      iex> ExOption.option_or(ExOption.some(2), ExOption.none())
       {:some, 2}
 
-      iex> ExOption.none() |> ExOption.option_or(ExOption.some(100))
+      iex> ExOption.option_or(ExOption.none(), ExOption.some(100))
       {:some, 100}
 
-      iex> ExOption.some(2) |> ExOption.option_or(ExOption.some(100))
+      iex> ExOption.option_or(ExOption.some(2), ExOption.some(100))
       {:some, 2}
 
-      iex> ExOption.none() |> ExOption.option_or(ExOption.none())
+      iex> ExOption.option_or(ExOption.none(), ExOption.none())
       {:none}
   """
   def option_or({:some, value}, {:some, _}), do: some(value)
@@ -232,13 +232,13 @@ defmodule ExOption do
 
   ## Examples
 
-      iex> ExOption.some("barbarians") |> ExOption.option_or_else(fn -> ExOption.some("vikings") end)
+      iex> ExOption.option_or_else(ExOption.some("barbarians"), fn -> ExOption.some("vikings") end)
       {:some, "barbarians"}
 
-      iex> ExOption.none() |> ExOption.option_or_else(fn -> ExOption.some("vikings") end)
+      iex> ExOption.option_or_else(ExOption.none(), fn -> ExOption.some("vikings") end)
       {:some, "vikings"}
 
-      iex> ExOption.none() |> ExOption.option_or_else(fn -> ExOption.none() end)
+      iex> ExOption.option_or_else(ExOption.none(), fn -> ExOption.none() end)
       {:none}
   """
   def option_or_else({:some, value}, _), do: some(value)
@@ -251,16 +251,16 @@ defmodule ExOption do
 
   ## Examples
 
-      iex> ExOption.some(2) |> ExOption.option_xor(ExOption.none())
+      iex> ExOption.option_xor(ExOption.some(2), ExOption.none())
       {:some, 2}
 
-      iex> ExOption.none() |> ExOption.option_xor(ExOption.some(2))
+      iex> ExOption.option_xor(ExOption.none(), ExOption.some(2))
       {:some, 2}
 
-      iex> ExOption.some(2) |> ExOption.option_xor(ExOption.some(2))
+      iex> ExOption.option_xor(ExOption.some(2), ExOption.some(2))
       {:none}
 
-      iex> ExOption.none() |> ExOption.option_xor(ExOption.none())
+      iex> ExOption.option_xor(ExOption.none(), ExOption.none())
       {:none}
   """
   def option_xor({:some, _}, {:some, _}), do: none()

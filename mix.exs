@@ -5,15 +5,11 @@ defmodule ExOption.MixProject do
     [
       app: :ex_option,
       description: "Option/Maybe library inspired by Rust.",
-      version: "0.1.2",
+      version: "0.1.3",
       elixir: "~> 1.6",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      package: [
-        maintainers: ["akthrms"],
-        licenses: ["MIT"],
-        links: %{"GitHub" => "https://github.com/akthrms/ex_option"}
-      ]
+      package: package()
     ]
   end
 
@@ -28,6 +24,14 @@ defmodule ExOption.MixProject do
   defp deps do
     [
       {:ex_doc, "~> 0.22", only: :dev, runtime: false}
+    ]
+  end
+
+  defp package do
+    [
+      maintainers: ["akthrms"],
+      licenses: ["MIT"],
+      links: %{"GitHub" => "https://github.com/akthrms/ex_option"}
     ]
   end
 end

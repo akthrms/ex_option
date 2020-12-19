@@ -130,31 +130,31 @@ defmodule ExOption do
 
   def map_or_else({:none}, default, _), do: default.()
 
-  @spec and_option(option, option) :: option
+  @spec option_and(option, option) :: option
   @doc """
   Returns none if the arg1 is none, otherwise returns arg2.
 
   ## Examples
 
-      iex> ExOption.some(2) |> ExOption.and_option(ExOption.none())
+      iex> ExOption.some(2) |> ExOption.option_and(ExOption.none())
       {:none}
 
-      iex> ExOption.none() |> ExOption.and_option(ExOption.some("foo"))
+      iex> ExOption.none() |> ExOption.option_and(ExOption.some("foo"))
       {:none}
 
-      iex> ExOption.some(2) |> ExOption.and_option(ExOption.some("foo"))
+      iex> ExOption.some(2) |> ExOption.option_and(ExOption.some("foo"))
       {:some, "foo"}
 
-      iex> ExOption.none() |> ExOption.and_option(ExOption.none())
+      iex> ExOption.none() |> ExOption.option_and(ExOption.none())
       {:none}
   """
-  def and_option({:some, _}, {:some, value}), do: some(value)
+  def option_and({:some, _}, {:some, value}), do: some(value)
 
-  def and_option({:some, _}, {:none}), do: none()
+  def option_and({:some, _}, {:none}), do: none()
 
-  def and_option({:none}, {:some, _}), do: none()
+  def option_and({:none}, {:some, _}), do: none()
 
-  def and_option({:none}, {:none}), do: none()
+  def option_and({:none}, {:none}), do: none()
 
   @spec and_then(option, (any -> option)) :: option
   @doc """
@@ -200,76 +200,76 @@ defmodule ExOption do
 
   def filter({:none}, _), do: none()
 
-  @spec or_option(option, option) :: option
+  @spec option_or(option, option) :: option
   @doc """
   Returns the arg1 if it contains a value, otherwise returns arg2.
 
   ## Examples
 
-      iex> ExOption.some(2) |> ExOption.or_option(ExOption.none())
+      iex> ExOption.some(2) |> ExOption.option_or(ExOption.none())
       {:some, 2}
 
-      iex> ExOption.none() |> ExOption.or_option(ExOption.some(100))
+      iex> ExOption.none() |> ExOption.option_or(ExOption.some(100))
       {:some, 100}
 
-      iex> ExOption.some(2) |> ExOption.or_option(ExOption.some(100))
+      iex> ExOption.some(2) |> ExOption.option_or(ExOption.some(100))
       {:some, 2}
 
-      iex> ExOption.none() |> ExOption.or_option(ExOption.none())
+      iex> ExOption.none() |> ExOption.option_or(ExOption.none())
       {:none}
   """
-  def or_option({:some, value}, {:some, _}), do: some(value)
+  def option_or({:some, value}, {:some, _}), do: some(value)
 
-  def or_option({:some, value}, {:none}), do: some(value)
+  def option_or({:some, value}, {:none}), do: some(value)
 
-  def or_option({:none}, {:some, value}), do: some(value)
+  def option_or({:none}, {:some, value}), do: some(value)
 
-  def or_option({:none}, {:none}), do: none()
+  def option_or({:none}, {:none}), do: none()
 
-  @spec or_option_else(option, (() -> option)) :: option
+  @spec option_or_else(option, (() -> option)) :: option
   @doc """
   Returns the option if it contains a value, otherwise calls f and returns the result.
 
   ## Examples
 
-      iex> ExOption.some("barbarians") |> ExOption.or_option_else(fn -> ExOption.some("vikings") end)
+      iex> ExOption.some("barbarians") |> ExOption.option_or_else(fn -> ExOption.some("vikings") end)
       {:some, "barbarians"}
 
-      iex> ExOption.none() |> ExOption.or_option_else(fn -> ExOption.some("vikings") end)
+      iex> ExOption.none() |> ExOption.option_or_else(fn -> ExOption.some("vikings") end)
       {:some, "vikings"}
 
-      iex> ExOption.none() |> ExOption.or_option_else(fn -> ExOption.none() end)
+      iex> ExOption.none() |> ExOption.option_or_else(fn -> ExOption.none() end)
       {:none}
   """
-  def or_option_else({:some, value}, _), do: some(value)
+  def option_or_else({:some, value}, _), do: some(value)
 
-  def or_option_else({:none}, fun), do: fun.()
+  def option_or_else({:none}, fun), do: fun.()
 
-  @spec xor_option(option, option) :: option
+  @spec option_xor(option, option) :: option
   @doc """
   Returns some if exactly one of arg1, arg2 is Some, otherwise returns none.
 
   ## Examples
 
-      iex> ExOption.some(2) |> ExOption.xor_option(ExOption.none())
+      iex> ExOption.some(2) |> ExOption.option_xor(ExOption.none())
       {:some, 2}
 
-      iex> ExOption.none() |> ExOption.xor_option(ExOption.some(2))
+      iex> ExOption.none() |> ExOption.option_xor(ExOption.some(2))
       {:some, 2}
 
-      iex> ExOption.some(2) |> ExOption.xor_option(ExOption.some(2))
+      iex> ExOption.some(2) |> ExOption.option_xor(ExOption.some(2))
       {:none}
 
-      iex> ExOption.none() |> ExOption.xor_option(ExOption.none())
+      iex> ExOption.none() |> ExOption.option_xor(ExOption.none())
       {:none}
   """
-  def xor_option({:some, _}, {:some, _}), do: none()
+  def option_xor({:some, _}, {:some, _}), do: none()
 
-  def xor_option({:some, value}, {:none}), do: some(value)
+  def option_xor({:some, value}, {:none}), do: some(value)
 
-  def xor_option({:none}, {:some, value}), do: some(value)
+  def option_xor({:none}, {:some, value}), do: some(value)
 
-  def xor_option({:none}, {:none}), do: none()
+  def option_xor({:none}, {:none}), do: none()
 
   @spec replace(option, any) :: option
   @doc """

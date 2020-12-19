@@ -14,7 +14,7 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
 ```elixir
 def deps do
   [
-    {:ex_option, "~> 0.1.2"}
+    {:ex_option, "~> 0.1.3"}
   ]
 end
 ```
